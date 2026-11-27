@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f6ef">
+  <meta name="description" content="查阅世界动作模型、机器人智能体与强化学习研究，按方法、算力和平台检索论文，观看作者发布的真机影像。">
+  <title>具身手记 · Embodied Fieldnotes</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="papers.js"></script>
+  <script defer src="films.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#papers">跳至论文索引</a>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="s-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v13c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v13"/></symbol>
+    <symbol id="s-play" viewBox="0 0 24 24"><path d="m8 4 12 8-12 8z"/></symbol>
+    <symbol id="s-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="s-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="s-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="s-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 10h18M7 5l3 5m3-5 3 5"/></symbol>
+  </svg>
+  <header class="masthead">
+    <div class="wrap navigation">
+      <a class="wordmark" href="#top" aria-label="具身手记首页">
+        <img src="favicon.svg" alt="" width="32" height="32">
+        <span><span class="brand-prefix">Embodied </span><i>Fieldnotes</i></span>
+      </a>
+      <nav aria-label="站内导航"><a href="#papers">论文索引</a><a href="#films">真机影像</a><a href="guide.html">阅读指南</a></nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="site-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> ROBOTICS RESEARCH ARCHIVE</p>
+        <h1 id="site-title">具身手记<span aria-hidden="true">.</span></h1>
+        <p class="hero-subtitle"><span>世界动作模型、</span><span>机器人智能体</span><span>与强化学习</span></p>
+        <p class="hero-intro">按研究路线、计算成本与机器人平台查阅论文，跟随作者的真机影像，观察方法如何落到真实任务。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#papers"><svg class="icon"><use href="#s-book"/></svg>查阅论文</a>
+          <a class="text-action" href="#films"><span class="round-play"><svg class="icon"><use href="#s-play"/></svg></span>观看真机演示</a>
+        </div>
+      </div>
+      <figure class="cover">
+        <div class="cover-image"><img src="assets/cover.webp" alt="机械臂主题封面概念图" fetchpriority="high"></div>
+        <figcaption><span>封面创作 · 机械臂概念图</span><span>文献截至 2026.11.28</span></figcaption>
+      </figure>
+    </section>
+    <section id="papers" class="index-section" aria-labelledby="paper-heading">
+      <div class="wrap">
+        <div class="index-header">
+          <div class="section-heading"><h2 id="paper-heading">论文索引</h2><span lang="en">Paper index</span></div>
+          <label class="searchbox" for="search"><svg class="icon" aria-hidden="true"><use href="#s-search"/></svg><input id="search" type="search" placeholder="搜索论文、平台或 GPU" autocomplete="off" aria-label="搜索论文、机器人平台或 GPU"></label>
+        </div>
+        <div class="filters" aria-label="筛选论文">
+          <label class="select-filter"><span>研究方向</span><select id="category" aria-label="研究方向"></select></label>
+          <label class="select-filter"><span>收录来源</span><select id="source" aria-label="收录来源"><option value="全部">全部研究</option><option>低算力专题</option><option>扩展综述</option></select></label>
+        </div>
+        <div class="list-head"><p id="result-count" role="status" aria-live="polite"></p><span>查阅笔记</span></div>
+        <div id="paper-list" class="paper-list" aria-label="论文列表"></div>
+        <div id="pages" class="pages" role="navigation" aria-label="论文分页"></div>
+      </div>
+    </section>
+    <section class="film-section" id="films" aria-labelledby="film-heading">
+      <div class="wrap">
+        <div class="section-heading"><h2 id="film-heading">真机影像</h2><span lang="en">Film room</span></div>
+        <p class="section-intro">精选作者发布的真机片段，按任务观看，并回到论文核对评测条件。</p>
+        <div class="film-grid" id="film-grid"></div>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap footer"><a href="#top" class="wordmark"><img src="favicon.svg" alt="" width="24" height="24"><span><span class="brand-prefix">Embodied </span><i>Fieldnotes</i></span></a><a href="#top">回到页首</a></footer>
+  <dialog id="detail" aria-labelledby="detail-name">
+    <div class="dialog-top"><span id="detail-type"></span><button type="button" id="close-detail" class="close" aria-label="关闭详情"><svg class="icon"><use href="#s-x"/></svg></button></div>
+    <div id="detail-content"></div>
+  </dialog>
+  <noscript>请启用 JavaScript 以使用论文搜索与真机影像索引。</noscript>
+</body>
+</html>

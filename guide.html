@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f7f1">
+  <meta name="description" content="从 PEAR 的真机对照，到 RoboDojo、RoboLab-120 的评测协议，以及单卡机器人研究的成本口径。">
+  <title>阅读指南 · 具身手记</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="guide.css">
+</head>
+<body>
+  <a class="skip" href="#reading">跳至正文</a>
+  <header class="masthead">
+    <div class="wrap navigation">
+      <a class="wordmark" href="index.html" aria-label="具身手记首页"><img src="favicon.svg" width="32" height="32" alt=""><span><span class="brand-prefix">Embodied </span><i>Fieldnotes</i></span></a>
+      <nav aria-label="站内导航"><a href="index.html#papers">论文索引</a><a href="index.html#films">真机影像</a><a href="guide.html" aria-current="page">阅读指南</a></nav>
+    </div>
+  </header>
+  <main id="reading" class="wrap">
+    <header class="guide-head">
+      <p class="eyebrow"><span></span> READING GUIDE</p>
+      <h1>阅读指南<span>.</span></h1>
+      <p>读一篇具身智能论文，可以先问三个问题。谁决定下一步动作？训练的计算花在哪里？最终在什么机器人、多少次试验上验证？</p>
+    </header>
+    <div class="guide-layout">
+      <nav class="contents" aria-label="本页目录"><p>本页目录</p>
+        <a href="#pear">PEAR 的真机对照</a><a href="#benchmarks">两个基准的评测口径</a><a href="#budget">低算力研究怎么选</a><a href="#comparisons">沿着问题对读</a><a href="#records">发表与外部采用</a>
+      </nav>
+      <div class="chapters">
+        <section id="pear">
+          <p class="chapter-label">从推理到动作</p><h2>PEAR 学会了什么？</h2>
+          <p>推理模型根据相机画面、机器人状态和交互历史给出下一个末端位姿，再由逆运动学和底层控制器驱动机械臂。训练全部在仿真中进行。下面三种模型在同一组双臂 YAM 真机抓取和排块任务上接受测试。</p>
+          <div class="trials">
+            <div><strong>0<small>/30</small></strong><span>基础模型</span></div>
+            <div><strong>7<small>/30</small></strong><span>仅在 LIBERO 训练</span></div>
+            <div><strong>18<small>/30</small></strong><span>追加 RoboDojo 训练</span></div>
+          </div>
+          <p>最后一组中，抓取成功 12/20，排块成功 6/10。两种任务在第二阶段仿真训练中出现过，真实机器人和测试现场是新的。作者报告实际后训练约用 5 万 H100 等效卡时。</p>
+          <p class="references"><a href="index.html#paper/pear">PEAR 论文笔记</a><a href="https://arxiv.org/html/2611.18562v2">论文与逐次试验</a><a href="https://mit-han-lab.github.io/pear-blog/">作者真机录像</a></p>
+        </section>
+        <section id="benchmarks">
+          <p class="chapter-label">评测协议</p><h2>看清任务、分母和终止条件</h2>
+          <h3>RoboDojo</h3><p>原始基准包括 42 项仿真任务和 18 项独立真机任务。PEAR 把部分泛化任务的标准布局与随机布局分开，得到 54 个仿真设置，每个测试 10 次，最终成功 21/540。前面的 YAM 结果另行评测。查排行榜时，还要留意智能体是否必须自行停止、能否在规定步数内完成任务。</p>
+          <p class="references"><a href="https://arxiv.org/abs/2607.04434">基准论文</a><a href="https://robodojo-benchmark.com/leaderboard/protocol?lang=en">排行榜计分协议</a></p>
+          <h3>NVIDIA RoboLab-120</h3><p>Isaac Sim 中的 Franka Panda 完成 120 项桌面操作，覆盖视觉、程序性及关系推理。PEAR 在 2,400 个仿真回合中得到 37.3% 的整任务成功率，若对子步骤给分则为 51.3/100。ORA 另取 100 项、500 个案例，最终成功率为 79.2%，限定模拟器步数时为 67.0%。任务集和统计规则均影响这些数字。</p>
+          <p class="references"><a href="https://research.nvidia.com/labs/srl/projects/robolab/">NVIDIA 基准与回合视频</a><a href="https://arxiv.org/abs/2604.09860">基准论文</a><a href="https://github.com/fast-rua/ORA">ORA 实验记录</a></p>
+        </section>
+        <section id="budget">
+          <p class="chapter-label">复现预算</p><h2>先选设备，再找相近的实验</h2>
+          <p>复现一项研究，要分别记录基座适配、世界模型或策略训练、真机采集和在线推理。下面几条阅读路径分别从已有资源出发。</p>
+          <div class="paths">
+            <article><h3>一张消费卡和一台机械臂</h3><p>HIL-SERL 展示示范和人工接管怎样支持单卡真机 RL。已有任务 VLA 时，可以看 FIND 如何在同一桌面反复练习，以及哪些环节仍需人工复位。</p><div class="references"><a href="index.html#paper/hil-serl">HIL-SERL</a><a href="index.html#paper/find">FIND</a><a href="index.html#paper/bee">BEE</a></div></article>
+            <article><h3>已有世界模型或离线轨迹</h3><p>LS-MBPO 的单张 RTX 5090、约 1.5 小时对应 LIBERO-Long 上的策略 RL。同一设置下，训练世界模型还需要 4 张 5090、约 12 小时。HALO-WA 则用真实接触反馈适配已有 WAM 的动作段。</p><div class="references"><a href="index.html#paper/ls-mbpo">LS-MBPO</a><a href="index.html#paper/halo-wa">HALO-WA</a><a href="index.html#paper/world4rl">World4RL</a></div></article>
+            <article><h3>已有睿尔曼平台</h3><p>UniManip 的 RM65 搭载移动底盘执行备餐和清理。MemoAct 与 RADAR 使用 RM65-B。TACO 的接书实验使用两台 RM75-6F，阅读时可分别核对机型、夹爪、相机与控制周期。</p><div class="references"><a href="index.html#paper/unimanip">UniManip</a><a href="index.html#paper/memoact">MemoAct</a><a href="index.html#paper/radar">RADAR</a><a href="index.html#paper/taco">TACO</a></div></article>
+          </div>
+        </section>
+        <section id="comparisons">
+          <p class="chapter-label">横向阅读</p><h2>沿着问题对读</h2>
+          <h3>强化学习额外贡献了多少？</h3><p>AgenticRoboRL 在 LIBERO-PRO 的同一组仿真测试中，从基座的 18.1% 到监督微调的 65.1%，再到 RL 的 71.0%。WMPO 则在真机插入任务上为每种方法各做 30 次，基础策略、离线 DPO、WMPO 的成功率依次为 53%、60%、70%。</p>
+          <p class="references"><a href="index.html#paper/agenticroborl">AgenticRoboRL</a><a href="https://openreview.net/forum?id=qE2FyvRvuF">WMPO 论文与评审</a></p>
+          <h3>什么时候值得在现场预测未来？</h3><p>Fast-WAM 在训练中保留视频监督，推理时直接生成动作。Cosmos Policy 在困难初态增加候选规划，平均完成度提高 12.5 分，每个动作块耗时也从约 0.95 秒升至 4.9 秒。对时间敏感的任务，可与下面两篇的控制周期和评测初态一同查阅。</p>
+          <p class="references"><a href="index.html#paper/fast-wam">Fast-WAM</a><a href="index.html#paper/cosmos-policy">Cosmos Policy</a></p>
+          <h3>看一次操作，还是看整组试验？</h3><p>单段录像适合观察接触、纠错与重抓。AgP 和 DreamZero 的作者另提供多次试验，可并排查看成功与失败。ORA 的回放库记录仿真智能体调用工具的过程。</p>
+          <p class="references"><a href="https://agent-as-policy-2026.github.io/results.html">AgP 真机试验</a><a href="https://dreamzero0.github.io/evals_gallery/">DreamZero 真机试次库</a><a href="https://fastrua.ai/ora/gallery/">ORA 仿真回放</a></p>
+        </section>
+        <section id="records">
+          <p class="chapter-label">研究影响</p><h2>发表、奖项与实际采用</h2>
+          <p>Open X-Embodiment / RT-X 获得 2024 IEEE ICRA 最佳会议论文奖，是当年的两项获奖工作之一。Octo 和 OpenVLA 后续使用其跨本体数据训练。UniSim 获 ICLR 2024 杰出论文奖，可从其中的视频模拟器实验追踪世界模型的早期路线。</p>
+          <p class="references"><a href="https://www.ieee-ras.org/awards-recognition/conference-awards/ieee-icra-best-conference-paper-award/">ICRA 历届奖项</a><a href="https://media.iclr.cc/Conferences/ICLR2024/ICLR2024_Press_Release.pdf">ICLR 官方公告</a><a href="index.html#paper/octo">Octo</a><a href="index.html#paper/openvla">OpenVLA</a></p>
+          <p>HIL-SERL 的期刊记录、VPP 的 ICML Spotlight 和 DreamZero 的 CoRL 口头报告可在正式页面查到。PEAR 的一项外部使用记录是 ORA 在同一框架中替换模型权重。在 RoboLab-120 全部 120 项上，基座为 52.5%（240 回合），换用 PEAR 为 61.9%（239 回合）。这项仿真对照可与 YAM 的真机评测分别查阅。</p>
+          <p class="references"><a href="https://doi.org/10.1126/scirobotics.ads5033">Science Robotics</a><a href="https://icml.cc/virtual/2025/poster/44705">ICML 记录</a><a href="https://www.corl.org/program/accepted-papers">CoRL 议程</a><a href="https://fastrua.ai/blog/2026-11-code-mode/#harness-and-model">ORA 权重对照</a></p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="wrap footer"><a href="index.html" class="wordmark"><img src="favicon.svg" width="24" height="24" alt=""><span><span class="brand-prefix">Embodied </span><i>Fieldnotes</i></span></a><a href="#reading">回到页首</a></footer>
+</body></html>
